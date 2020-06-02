@@ -1,0 +1,107 @@
+<body>
+  <div id="root"></div>
+  <script src="http://unpkg.com/react/umd/react.production.min.js"></script>
+  <script src="http://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone@7.9.6/babel.js"></script>
+
+  <script type="text/babel">
+    const initialState = () => ({
+      total: 2,
+      langs: ['python', 'go'],
+    })
+
+    const AddInList = () => {
+      const [state, setState] = React.useState(() => ({
+        total: 2,
+        langs: ['python', 'go'],
+      }))
+
+      const addLang = () =>
+        setTimeout(() => {
+          setState((prev) => ({
+            total: prev.langs.length + 1,
+            langs: [...prev.langs, 'js'],
+          }))
+        }, 2000)
+
+      return (
+        <div>
+          <button onClick={addLang}>Add</button>
+          <button onClick={() => setState({ total: 0, langs: [] })}>
+            Clear
+          </button>
+          {JSON.stringify(state)}
+        </div>
+      )
+    }
+
+    const Bank = () => {
+      const [state, setState] = React.useState(100)
+
+      const add = () =>
+        setTimeout(() => {
+          setState((prevState) => prevState + 15)
+        }, 2000)
+
+      return (
+        <div>
+          <button onClick={add}>Deposito: R$ 15,00</button>
+          <button onClick={() => setState(state - 100)}>
+            Saque: R$ 100,00
+          </button>
+          R$ {state},00
+        </div>
+      )
+    }
+
+    const HookState = () => {
+      const [state, setState] = React.useState({
+        status: 'idle',
+        loading: false,
+      })
+
+      return (
+        <div>
+          <button onClick={() => setState({ ...state, loading: true })}>
+            Add
+          </button>
+          {JSON.stringify(state)}
+        </div>
+      )
+    }
+
+    class ClassState extends React.Component {
+      constructor(props) {
+        super(props)
+        this.state = {
+          status: 'idle',
+          loading: false,
+        }
+      }
+
+      render() {
+        return (
+          <div>
+            <button onClick={() => this.setState({ loading: true })}>
+              Add (class)
+            </button>
+            {JSON.stringify(this.state)}
+          </div>
+        )
+      }
+    }
+
+    function App() {
+      return (
+        <div>
+          <HookState />
+          <ClassState />
+          <AddInList />
+          <Bank />
+        </div>
+      )
+    }
+
+    ReactDOM.render(<App />, document.getElementById('root'))
+  </script>
+</body>
